@@ -1,0 +1,19 @@
+{
+  "name": "plugin-yo",
+  "authors": [
+    "serioga <sergey.datsiy@yanpix.com>"
+  ],
+  "description": "",
+  "main": "plugin",
+  "moduleType": [],
+  "license": "MIT",
+  "homepage": "",
+  "private": true,
+  "ignore": [
+    "**/.*",
+    "node_modules",
+    "bower_components",
+    "test",
+    "tests"
+  ]
+}
