@@ -43,10 +43,11 @@
                 var $this = $(this),
 
                     users = [], tags = [],
-                    data = {
-                        '': null
-                    },
-                    defaults = $.extend({}, options || {});
+                    defaults = $.extend({
+                        data: {
+                            '': null
+                        }
+                    }, options || {});
 
                 var overrides = {
                     beforeAdd: function () {
@@ -108,18 +109,24 @@
                 }
 
                 $this.render = function () {
-                    var $rows = $('<div/>', {class: 'rows'}).clone();
-                    var $row;
+                    var $rows = $('<div/>', {class: 'rows'}).clone(),
+                        $row,
+                        data = defaults.data;
+
+                    if (data[''] === undefined) {
+                        data[''] = null;
+                    }
                     for (var key in data) {
                         $row = $('<div/>', {class: 'row'}).clone();
                         $row.append(select(users, key, {class: 'users-select'}));
                         $row.append(select(tags, data[key], {class: 'tags-select'}));
                         $row.append(removeBtn());
                         $rows.append($row);
+                        overrides.afterAdd($row);
                     }
 
                     $this.html($rows);
-                    overrides.afterAdd($row);
+                    methods.disableFields.call($this);
                 };
 
                 overrides = $.extend({}, overrides, options || {});
