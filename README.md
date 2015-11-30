@@ -10,7 +10,8 @@ var userList = $('#user-list').userTagList({
     beforeAdd: function() {},
     afterAdd: function($row) {}, // method which called after the row added
     beforeRemove: function($row) {}, // method which called before the element going to be removed
-    afterRemove: function() {}
+    afterRemove: function() {},
+    data: {} // default list where key = UserId, value = TagId
 });
 ```
     

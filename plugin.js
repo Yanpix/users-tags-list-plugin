@@ -60,7 +60,10 @@
                     }
                 };
 
-                function select(rows, key, options) {
+                function select(rows, key, options, needEvent) {
+                    if (typeof needEvent !== 'boolean') {
+                        needEvent = true;
+                    }
                     var $select = $('<select/>', $.extend({}, options || {})).clone();
                     $select.append($.map(rows, function (row) {
                         return $('<option/>', {
@@ -69,7 +72,9 @@
                         }).clone();
                     }));
                     $select.val(key);
-                    $select.on('change', selectChanged);
+                    if (needEvent) {
+                        $select.on('change', selectChanged);
+                    }
                     return $select;
                 }
 
@@ -85,7 +90,7 @@
                         var $rows = $this.find('.rows');
                         var $row = $('<div/>', {class: 'row'}).clone();
                         $row.append(select(users, '', {class: 'users-select'}));
-                        $row.append(select(tags, '', {class: 'tags-select'}));
+                        $row.append(select(tags, '', {class: 'tags-select'}, false));
                         $row.append(removeBtn());
                         $rows.append($row);
                     }
@@ -95,8 +100,7 @@
 
                 function removeBtn() {
                     var btn = $('<i/>', {
-                        class: 'fa fa-minus',
-                        text: '-'
+                        class: 'fa fa-minus'
                     }).clone();
 
                     btn.on('click', function () {
@@ -119,7 +123,7 @@
                     for (var key in data) {
                         $row = $('<div/>', {class: 'row'}).clone();
                         $row.append(select(users, key, {class: 'users-select'}));
-                        $row.append(select(tags, data[key], {class: 'tags-select'}));
+                        $row.append(select(tags, data[key], {class: 'tags-select'}, false));
                         $row.append(removeBtn());
                         $rows.append($row);
                         overrides.afterAdd($row);
@@ -139,8 +143,8 @@
                         url: defaults.url,
                         dataType: 'json',
                         success: function (data) {
-                            users = data.Users;
-                            tags = data.Tags;
+                            users = data.Users || [];
+                            tags = data.Tags || [];
 
                             users.push({Id: '', Name: ''});
                             tags.push({Id: '', Name: ''});
